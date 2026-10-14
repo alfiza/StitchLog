@@ -1,0 +1,44 @@
+# Everything on one small server (e.g. Hetzner CX22 in Germany/Finland, EU for GDPR):
+#   cp backend/.env.example backend/.env   (fill it in)
+#   docker compose up -d --build
+# Then put Caddy or Cloudflare in front for HTTPS.
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: stitchlog
+      POSTGRES_USER: stitchlog
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U stitchlog"]
+      interval: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    env_file: ./backend/.env
+    environment:
+      DATABASE_URL: postgresql+psycopg://stitchlog:${POSTGRES_PASSWORD:-change-me}@db:5432/stitchlog
+      MEDIA_DIR: /app/media
+    volumes:
+      - media:/app/media
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
+  media:

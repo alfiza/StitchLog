@@ -1,0 +1,25 @@
+# secrets and private data
+.env
+.env.*
+!.env.example
+*.db
+*.sqlite3
+backend/media/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# Node
+node_modules/
+frontend/dist/
+
+# backups and editor files
+*.bak
+*.tgz
+.vscode/
+.idea/
+.DS_Store

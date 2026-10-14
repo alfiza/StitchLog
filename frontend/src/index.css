@@ -1,0 +1,83 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-display: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Atkinson Hyperlegible', ui-sans-serif, system-ui, sans-serif;
+
+  --color-paper: #f6f8fa;
+  --color-surface: #ffffff;
+  --color-ink: #1c2233;
+  --color-ink-soft: #4b5468;
+  --color-ink-faint: #7d8597;
+  --color-line: #dfe3ea;
+  --color-thread: #3a3d9c;
+  --color-thread-dark: #2c2e7d;
+  --color-thread-tint: #ebecf8;
+  --color-tape: #f3c33c;
+  --color-tape-tint: #fdf4d8;
+  --color-ready: #1e7f55;
+  --color-ready-tint: #e3f3eb;
+  --color-late: #b83a28;
+  --color-late-tint: #fbe9e5;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-paper font-sans text-ink antialiased;
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-display text-ink;
+    letter-spacing: -0.01em;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-thread);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  input,
+  select,
+  textarea {
+    font-size: 16px; /* stops iPhone zooming in on focus */
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* The stitched line used under the page title, like a basting stitch */
+.stitch {
+  height: 2px;
+  background-image: linear-gradient(to right, var(--color-thread) 60%, transparent 0);
+  background-size: 10px 2px;
+  background-repeat: repeat-x;
+}
+
+@keyframes tag-swing {
+  0% {
+    transform: rotate(-6deg);
+  }
+  60% {
+    transform: rotate(2deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+.tag-swing {
+  transform-origin: 50% 10%;
+  animation: tag-swing 0.7s ease-out;
+}
